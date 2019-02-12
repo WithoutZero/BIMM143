@@ -1,5 +1,5 @@
 ---
-title: "Class06"
+title: "Class06 github"
 author: "Zhuohang Wu"
 date: "January 24, 2019"
 output: github_document
