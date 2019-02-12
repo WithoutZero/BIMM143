@@ -1,0 +1,62 @@
+---
+title: "UK food"
+author: "Zhuohang Wu"
+date: "February 5, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+x <- read.csv("UK_foods.csv")
+nrow(x)
+ncol(x)
+```
+```{r}
+rownames(x) <- x[,1]
+x <- x[,-1]
+head(x)
+```
+
+```{r}
+x <- read.csv("UK_foods.csv", row.names=1)
+head(x)
+```
+
+```{r}
+barplot(as.matrix(x), beside=F, col=rainbow(nrow(x)))
+pairs(x, col=rainbow(10), pch=16)
+```
+
+```{r}
+pca <- prcomp(t(x))
+summary(pca)
+```
+
+
+```{r}
+plot(pca$x[,1], pca$x[,2], xlab="PC1", ylab="PC2", xlim=c(-270,500))
+text(pca$x[,1], pca$x[,2], colnames(x), col=c("red","blue","yellow", "green"))
+```
+
+```{r}
+v <- round( pca$sdev^2/sum(pca$sdev^2) * 100 )
+v
+z <- summary(pca)
+z$importance
+barplot(v, xlab="Principal Component", ylab="Percent Variation", ylim=c(0,100))
+```
+
+```{r}
+## Lets focus on PC1 as it accounts for > 90% of variance 
+par(mar=c(10, 3, 0.35, 0))
+barplot( pca$rotation[,1], las=2 )
+```
+
+```{r}
+par(mar=c(10, 3, 0.35, 0))
+barplot( pca$rotation[,2], las=2 )
+```
+
