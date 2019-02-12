@@ -1,0 +1,98 @@
+---
+title: "Class06"
+author: "Zhuohang Wu"
+date: "January 24, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Class06
+
+## Section 1 : reading files again
+HahHahaHahahAhHAhahahahahahAhaahaHaHahaahaHaAhAH!!!!!!!!!!
+
+```{r}
+plot(1:50)
+```
+
+HehehHehheHEHeHehehehHeheheHhEhEhehehEHhEh!!!!!!!
+
+```{r}
+read.table("https://bioboot.github.io/bimm143_W19/class-material/test1.txt", header= TRUE, sep=",")
+```
+
+```{r}
+read.table("https://bioboot.github.io/bimm143_W19/class-material/test2.txt", header=TRUE, sep="$")
+```
+
+```{r}
+read.table("https://bioboot.github.io/bimm143_W19/class-material/test3.txt", col.names = c("A","B","C"), row.names = c("!","@","#","$","%"), sep="")
+```
+
+
+```{r}
+data1 <- read.csv("https://bioboot.github.io/bimm143_W19/class-material/test1.txt")
+data1
+```
+
+```{r}
+data2 <- read.csv("https://bioboot.github.io/bimm143_W19/class-material/test2.txt")
+data2
+```
+
+```{r}
+data3 <- read.csv("https://bioboot.github.io/bimm143_W19/class-material/test3.txt")
+data3
+```
+
+```{r}
+A_Math_Problem <- function(x)
+{
+ y <- (x^4) 
+ z <-( y+9)
+ print(y)
+ print(z)
+}
+
+A_Math_Problem(2)
+```
+
+```{r}
+A_Math_Problem(56)
+```
+
+```{r}
+library(bio3d)
+Kinase <- function(s){
+  s1 <- read.pdb("4AKE") # kinase with drug
+  s2 <- read.pdb("1AKE") # kinase no drug
+  s3 <- read.pdb("1E4Y") # kinase with drug
+  if(s ==  1){
+    s1.chainA <- trim.pdb(s1, chain="A", elety="CA")
+    s1.b <- s1.chainA$atom$b
+    plotb3(s1.b, sse=s1.chainA, typ="l", ylab="Bfactor")
+    return()
+  }
+  if(s <-  2){
+    s2.chainA <- trim.pdb(s2, chain="A", elety="CA")
+    s2.b <- s2.chainA$atom$b
+    plotb3(s2.b, sse=s1.chainA, typ="l", ylab="Bfactor")
+    return
+  }
+  if(s <-  3){
+    s3.chainA <- trim.pdb(s1, chain="A", elety="CA")
+    s3.b <- s3.chainA$atom$b
+    plotb3(s3.b, sse=s1.chainA, typ="l", ylab="Bfactor")
+    return
+  }
+}
+```
+
+
+```{r}
+Kinase(1)
+```
+
