@@ -1,0 +1,51 @@
+---
+title: "class13"
+author: "Zhuohang Wu"
+date: "February 19, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(bio3d)
+file.name <- get.pdb("1hsg")
+hiv <- read.pdb(file.name)
+```
+
+```{r}
+hiv
+```
+
+```{r}
+prot <- trim.pdb(hiv,"protein")
+lig <- trim.pdb(hiv,"ligand")
+write.pdb(prot, file="1hsg_protein.pdb")
+write.pdb(lig, file="1hsg_ligand.pdb")
+```
+
+```{r}
+library(bio3d)
+res <- read.pdb("all.pdbqt", multi=TRUE)
+write.pdb(res, "results.pdb")
+```
+
+```{r}
+res <- read.pdb("all.pdbqt", multi=TRUE)
+ori <- read.pdb("1hsg_ligand.pdbqt")
+result <- rmsd(ori, res)
+atom.select()
+```
+
+```{r}
+pdb <- read.pdb("1HEL")
+m <- nma(pdb)
+plot(m)
+```
+
+```{r}
+mktrj(m,mode=7,file="nma_7.pdb")
+```
+
