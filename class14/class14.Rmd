@@ -1,0 +1,66 @@
+---
+title: "class14"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+read.sample <- read.csv("373510-SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv")
+head(read.sample)
+```
+
+```{r}
+table(read.sample$Genotype..forward.strand.)
+```
+
+```{r}
+sum(read.sample$Genotype..forward.strand.== "G|G")
+```
+
+```{r}
+(table(read.sample$Genotype..forward.strand.)/nrow(read.sample))*100
+```
+
+```{r}
+
+q <- "DDDDCDEDCDDDDBBDDDCC@"
+```
+
+```{r}
+q <- "DDDDCDEDCDDDDBBDDDCC@"
+library(seqinr)
+library(gtools)
+asc(s2c(q))-33
+```
+
+
+```{r}
+geno <- read.table("rs8067378_ENSG00000172057.6.txt")
+head(geno)
+```
+
+
+```{r}
+table(geno$geno)
+```
+
+
+```{r}
+inds <- geno$geno == "G/G"
+summary(geno$exp[inds])
+inds <- geno$geno == "A/G"
+summary(geno$exp[inds])
+inds <- geno$geno == "G/A"
+summary(geno$exp[inds])
+inds <- geno$geno == "A/A"
+summary(geno$exp[inds])
+```
+
+```{r}
+boxplot(exp~geno, geno)
+```
+
