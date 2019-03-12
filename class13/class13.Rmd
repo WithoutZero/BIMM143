@@ -2,7 +2,7 @@
 title: "class13"
 author: "Zhuohang Wu"
 date: "February 19, 2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -36,7 +36,6 @@ write.pdb(res, "results.pdb")
 res <- read.pdb("all.pdbqt", multi=TRUE)
 ori <- read.pdb("1hsg_ligand.pdbqt")
 result <- rmsd(ori, res)
-atom.select()
 ```
 
 ```{r}
