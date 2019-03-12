@@ -1,0 +1,50 @@
+---
+title: "Find_a_gene"
+author: "Zhuohang Wu"
+date: "March 9, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(bio3d)
+```
+
+```{r}
+alignment <- read.fasta("species alignment")
+alignment
+```
+
+```{r}
+id <- seqidentity(alignment, normalize=TRUE, similarity=FALSE, ncore=1, nseg.scale=1)
+id
+```
+
+```{r}
+heatmap <- heatmap(id, Rowv=T, Colv=T, col = heat.colors(256), scale="column", margins=c(10,10), main="Alignment_Heatmap",symm=T)
+```
+
+```{r}
+Q8 <- read.fasta("third reading frame.txt")
+consensus(Q8)
+```
+
+```{r}
+Q8.pdb <- blast.pdb(Q8)
+Q8.pdb
+
+```
+
+```{r}
+plot.blast(Q8.pdb, mar=c(1,4,2,2))
+```
+
+```{r}
+ids <- c(Q8.pdb$hit.tbl$subjectids, best.only=TRUE)
+pdb.annotate(ids)
+```
+

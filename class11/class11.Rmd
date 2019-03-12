@@ -1,0 +1,49 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+stats <- read.csv("Data.csv")
+stats
+percentage1 <- stats[1,]$Proteins/stats[1,]$Total
+percentage1
+percentage2 <- stats[3,]$Proteins/stats[3,]$Total
+percentage2
+percentage3 <- stats$Total/sum(stats$Total)
+percentage3
+```
+
+
+```{r}
+library(bio3d)
+```
+
+```{r}
+pdb <- read.pdb("1hsg.pdb")
+pdb
+```
+
+```{r}
+pdb$atom
+```
+
+```{r}
+protein <- atom.select(pdb,'protein')
+protein
+ligand <- atom.select(pdb,'ligand')
+ligand
+trim.protein <- trim.pdb(pdb,protein)
+trim.ligand <- trim.pdb(pdb,ligand)
+```
+
+```{r}
+install.packages("devtools")
+devtools::install_bitbucket("Grantlab/bio3d-view")
+```
+

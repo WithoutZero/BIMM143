@@ -1,0 +1,235 @@
+---
+title: "class15"
+author: "Zhuohang Wu"
+date: "February 26, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+counts <- read.csv("data/airway_scaledcounts.csv", stringsAsFactors = FALSE)
+metadata <-  read.csv("data/airway_metadata.csv", stringsAsFactors = FALSE)
+```
+
+```{r}
+head(counts)
+```
+
+```{r}
+head(metadata)
+```
+
+
+```{r}
+control.inds <- metadata$dex=="control"
+control.ids <- metadata$id[control.inds]
+head(counts[,control.ids])
+```
+
+```{r}
+control.mean <- rowSums(counts[,control.ids])/ncol(counts[,control.ids])
+head(control.mean)
+names(control.mean) <- counts$ensgene
+```
+
+```{r}
+drug.inds <- metadata$dex=="treated"
+drug.ids <- metadata$id[drug.inds]
+head(counts[,drug.ids])
+```
+
+```{r}
+drug.mean <- rowSums(counts[,drug.ids])/ncol(counts[,drug.ids])
+head(drug.mean)
+names(drug.mean) <- counts$ensgene
+```
+
+```{r}
+mean.counts <- data.frame(control.mean,drug.mean)
+head(mean.counts)
+```
+
+```{r}
+plot(control.mean,drug.mean,xlab = "control",ylab = "drug",main = "Treated vs. Control")
+```
+
+
+```{r}
+plot(control.mean,drug.mean,log="xy",xlab = "control",ylab = "drug",main = "Treated vs. Control")
+```
+
+We can find candidate differentially expressed genes by looking for genes with a large change between control and dex-treated samples. We usually look at the log2 of the fold change, because this has better mathematical properties.
+
+Here we calculate log2foldchange, add it to our meancounts data.frame and inspect the results either with the head() or the View() function for example.
+
+```{r}
+mean.counts$log2fc <- log2(mean.counts[,"drug.mean"]/mean.counts[,"control.mean"])
+head(mean.counts)
+```
+
+```{r}
+t.test(control.mean,drug.mean)
+```
+
+```{r}
+zero.vals <- which(mean.counts[,1:2]==0, arr.ind=TRUE)
+```
+
+
+```{r}
+to.rm <- unique(zero.vals[,1])
+mycounts <- mean.counts[-to.rm,]
+head(mycounts)
+```
+
+```{r}
+up.ind <- mycounts$log2fc > 2
+down.ind <- mycounts$log2fc < (-2)
+```
+
+```{r}
+head(mycounts[up.ind,])
+```
+
+```{r}
+head(mycounts[down.ind,])
+```
+
+
+```{r}
+sum(up.ind)
+sum(down.ind)
+```
+
+```{r}
+anno <- read.csv("data/annotables_grch38.csv")
+head(anno)
+```
+
+
+```{r}
+head(mycounts)
+```
+
+```{r}
+#head(mycounts)
+my.count.annotated <- merge(x=mycounts, y= anno, by.x = "row.names", by.y = "ensgene")
+head(my.count.annotated)
+```
+
+```{r}
+library(DESeq2)
+```
+
+```{r}
+citation("DESeq2")
+```
+
+```{r}
+dds <- DESeqDataSetFromMatrix(countData=counts, 
+                              colData=metadata, 
+                              design=~dex, 
+                              tidy=TRUE)
+dds
+```
+
+```{r}
+dds <- DESeq(dds)
+```
+
+```{r}
+res <- results(dds)
+res
+```
+
+```{r}
+summary(res)
+```
+
+```{r}
+res05 <- results(dds, alpha=0.05)
+summary(res05)
+```
+
+
+```{r}
+plot(res$log2FoldChange, -log(res$padj))
+```
+
+```{r}
+resSig05 <- subset(as.data.frame(res), padj < 0.05)
+nrow(resSig05)
+```
+
+```{r}
+#resSig01 <- subset(as.data.frame(res), padj < 0.01)
+#nrow(resSig01)
+ord <- order( resSig01$padj )
+View(res01[ord,])
+head(resSig01[ord,])
+```
+
+```{r}
+#resSig01$
+head(resSig01[ord,])
+```
+
+
+
+```{r}
+head(anno)
+```
+
+```{r}
+resSig01<-merge(x=resSig01[ord,], y=anno, by.x="row.names", by.y="ensgene")
+head(resSig01)
+```
+
+
+```{r}
+write.csv(resSig01[ord,], "signif01_results.csv")
+
+
+```
+
+```{r}
+i <- grep("CRISPLD2", resSig01$symbol)
+resSig01[i,]
+```
+
+```{r}
+plotCounts(dds, gene="ENSG00000103196", intgroup="dex")
+```
+
+```{r}
+d <- plotCounts(dds, gene="ENSG00000103196", intgroup="dex", returnData=TRUE)
+head(d)
+```
+
+```{r}
+boxplot(count ~ dex , data=d)
+```
+
+```{r}
+library(ggplot2)
+ggplot(d, aes(dex, count)) + geom_boxplot(aes(fill=dex)) + scale_y_log10() + ggtitle("CRISPLD2")
+```
+
+```{r}
+res$sig <- res$padj<0.05
+table(res$sig)
+sum(is.na(res$sig))
+```
+
+
+```{r}
+library(ggplot2)
+
+ggplot(as.data.frame(res), aes(log2FoldChange, -1*log10(pvalue), col=sig)) + 
+    geom_point() + 
+    ggtitle("Volcano plot")
+```
+
