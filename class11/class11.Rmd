@@ -45,7 +45,7 @@ trim.ligand <- trim.pdb(pdb,ligand)
 ```
 
 ```{r}
-install.packages("devtools")
-devtools::install_bitbucket("Grantlab/bio3d-view")
+#install.packages("devtools")
+#devtools::install_bitbucket("Grantlab/bio3d-view")
 ```
 
