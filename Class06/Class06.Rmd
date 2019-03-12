@@ -2,7 +2,9 @@
 title: "Class06 github"
 author: "Zhuohang Wu"
 date: "January 24, 2019"
-output: github_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
