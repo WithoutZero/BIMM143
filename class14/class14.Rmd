@@ -1,5 +1,6 @@
 ---
 title: "class14"
+author: "Zhuohang Wu"
 output: github_document
 ---
 

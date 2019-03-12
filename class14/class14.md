@@ -1,5 +1,6 @@
 class14
 ================
+Zhuohang Wu
 
 ``` r
 read.sample <- read.csv("373510-SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv")
