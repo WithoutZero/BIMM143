@@ -2,7 +2,7 @@
 title: "class15"
 author: "Zhuohang Wu"
 date: "February 26, 2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -150,8 +150,8 @@ summary(res)
 ```
 
 ```{r}
-res05 <- results(dds, alpha=0.05)
-summary(res05)
+res01 <- results(dds, alpha=0.01)
+summary(res01)
 ```
 
 
@@ -160,8 +160,8 @@ plot(res$log2FoldChange, -log(res$padj))
 ```
 
 ```{r}
-resSig05 <- subset(as.data.frame(res), padj < 0.05)
-nrow(resSig05)
+resSig01 <- subset(as.data.frame(res), padj < 0.01)
+nrow(resSig01)
 ```
 
 ```{r}
