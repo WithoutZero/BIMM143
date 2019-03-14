@@ -2,7 +2,7 @@
 title: "class16"
 author: "Zhuohang Wu"
 date: "February 28, 2019"
-output: html_document
+output: github_document
 ---
 
 ```{r deseq_load, message=FALSE}

@@ -48,3 +48,9 @@ plot(m)
 mktrj(m,mode=7,file="nma_7.pdb")
 ```
 
+```{r}
+#res <- read.pdb("all.pdbqt", multi=TRUE)
+ori <- read.pdb("1hsg_ligand.pdbqt")
+rmsd(ori, res)
+```
+
